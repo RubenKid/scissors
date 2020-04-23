@@ -23,7 +23,7 @@ import android.annotation.TargetApi;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.os.Build;
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;

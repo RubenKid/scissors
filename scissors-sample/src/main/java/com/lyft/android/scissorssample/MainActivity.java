@@ -18,6 +18,7 @@ package com.lyft.android.scissorssample;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -28,7 +29,9 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
-import butterknife.Bind;
+
+import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
@@ -50,13 +53,13 @@ public class MainActivity extends Activity {
 
     private static final String[] ASPECT_LABELS = { "\u00D8", "1:1", "6:4", "16:9" };
 
-    @Bind(R.id.crop_view)
+    @BindView(R.id.crop_view)
     CropView cropView;
 
-    @Bind({ R.id.crop_fab, R.id.pick_mini_fab, R.id.ratio_fab })
+    @BindViews({ R.id.crop_fab, R.id.pick_mini_fab, R.id.ratio_fab })
     List<View> buttons;
 
-    @Bind(R.id.pick_fab)
+    @BindView(R.id.pick_fab)
     View pickButton;
 
     CompositeSubscription subscriptions = new CompositeSubscription();
@@ -65,12 +68,14 @@ public class MainActivity extends Activity {
     private AnimatorListener animatorListener = new AnimatorListener() {
         @Override
         public void onAnimationStart(Animator animation) {
-            ButterKnife.apply(buttons, VISIBILITY, View.INVISIBLE);
+            for (View button: buttons) { button.setVisibility(View.INVISIBLE); }
         }
 
         @Override
         public void onAnimationEnd(Animator animation) {
-            ButterKnife.apply(buttons, VISIBILITY, View.VISIBLE);
+            for (View button: buttons) {
+                button.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
@@ -82,6 +87,7 @@ public class MainActivity extends Activity {
         }
     };
 
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,26 +181,19 @@ public class MainActivity extends Activity {
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
-                ButterKnife.apply(buttons, VISIBILITY, View.INVISIBLE);
+                for (View button: buttons) { button.setVisibility(View.INVISIBLE); }
                 break;
             default:
-                ButterKnife.apply(buttons, VISIBILITY, View.VISIBLE);
+                for (View button: buttons) { button.setVisibility(View.VISIBLE); }
                 break;
         }
         return true;
     }
 
     private void updateButtons() {
-        ButterKnife.apply(buttons, VISIBILITY, View.VISIBLE);
+        for (View button: buttons) { button.setVisibility(View.VISIBLE); }
         pickButton.setVisibility(View.GONE);
     }
-
-    static final ButterKnife.Setter<View, Integer> VISIBILITY = new ButterKnife.Setter<View, Integer>() {
-        @Override
-        public void set(final View view, final Integer visibility, int index) {
-            view.setVisibility(visibility);
-        }
-    };
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     static void autoCancel(ObjectAnimator objectAnimator) {
