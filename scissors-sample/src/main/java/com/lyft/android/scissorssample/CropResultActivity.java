@@ -43,7 +43,7 @@ public class CropResultActivity extends Activity {
         String filePath = getIntent().getStringExtra(EXTRA_FILE_PATH);
         File imageFile = new File(filePath);
 
-        Picasso.with(this)
+        Picasso.get()
                 .load(imageFile)
                 .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                 .into(resultView);
