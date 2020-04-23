@@ -135,7 +135,7 @@ public class MainActivity extends Activity {
     }
 
     @OnClick({ R.id.pick_fab, R.id.pick_mini_fab })
-    public void onPickClicked() {
+    public void onPickClicked(View view) {
         cropView.extensions()
                 .pickUsing(this, RequestCodes.PICK_IMAGE_FROM_GALLERY);
     }
